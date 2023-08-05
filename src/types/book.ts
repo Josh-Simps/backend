@@ -4,6 +4,7 @@ export interface BookType {
   author: string
   publishDate: Date
   blurb: string
-  originalContent: string
-  translatedContent: Record<string, string>
+  content: Record<string, string[]> & {
+    images: string[]
+  }
 }

@@ -1,7 +1,8 @@
-import { BookType } from 'book'
+import { BookType } from '../types/book'
 import { Schema } from 'mongoose'
+import { mongooseDb } from '../utils/mongoose'
 
-export const bookSchema = new Schema<BookType>({
+const bookSchema = new Schema<BookType>({
   title: {
     type: String,
   },
@@ -17,11 +18,10 @@ export const bookSchema = new Schema<BookType>({
   blurb: {
     type: String,
   },
-  originalContent: {
-    type: String,
-  },
-  translatedContent: {
+  content: {
     type: Map,
     of: String,
   },
 })
+
+export const BookModel = mongooseDb.model<BookType>('books', bookSchema)
