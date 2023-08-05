@@ -6,5 +6,6 @@ export interface BookType {
   blurb: string
   content: {
     images: string[]
-  } | { [key: string]: string[] }
+    [key: string]: string[]
+  }
 }
