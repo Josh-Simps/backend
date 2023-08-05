@@ -1,1 +1,2 @@
-export { exampleRoute } from './example'
+export * from './example'
+export * from './book'
