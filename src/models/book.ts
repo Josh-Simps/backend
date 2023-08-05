@@ -6,6 +6,7 @@ const bookSchema = new Schema<BookType>(
   {
     title: {
       type: String,
+      index: true
     },
     coverImage: {
       type: String,
