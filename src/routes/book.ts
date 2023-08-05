@@ -24,14 +24,14 @@ bookRoute.route('/:bookId').get(async (req: Request<{ bookId: string }>, res: Re
       return res.status(Status.BadRequest).json(`The id '${req.params.bookId}' is not a valid id`)
     }
 
-    const book = await BookModel.findById(req.params.bookId)
+    const book = await BookModel.findById(req.params.bookId).lean().exec()
 
     if (!book) {
       return res.status(Status.NotFound).json(`There is no book with the id '${req.params.bookId}'`)
     }
 
-    // TODO: Remove we don't have content for the other books yet
-    const book1984 = await BookModel.findById(BookId1984)
+    // TODO: Temporary only - We don't have content for the other books yet
+    const book1984 = await BookModel.findById(BookId1984).lean().exec()
     const mockedBook = { ...book, content: book1984.content }
 
     // TODO: Only return first few pages
