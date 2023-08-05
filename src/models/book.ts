@@ -19,8 +19,7 @@ const bookSchema = new Schema<BookType>({
     type: String,
   },
   content: {
-    type: Map,
-    of: String,
+    type: Object,
   },
 })
 
