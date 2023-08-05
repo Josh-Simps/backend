@@ -1,5 +1,6 @@
 import { Request, Response, Router } from 'express'
 import { BookModel } from '../models/book'
+import { Status } from '../types/status'
 
 export const bookRoute = Router()
 
@@ -7,9 +8,9 @@ bookRoute.route('/').get(async (req: Request, res: Response) => {
   try {
     const bookMetadata = await BookModel.find().select(['title', 'coverImage', 'author', 'publishDate'])
 
-    return res.status(200).json(bookMetadata)
+    return res.status(Status.Ok).json(bookMetadata)
   } catch (err) {
-    return res.status(500).json(err.message)
+    return res.status(Status.InternalServerError).json(err.message)
   }
 })
 
@@ -18,13 +19,13 @@ bookRoute.route('/:bookId').get(async (req: Request<{ bookId: string }>, res: Re
     const book = await BookModel.findById(req.params.bookId)
 
     if (!book) {
-      return res.status(404).json(`There is no book with the id ${req.params.bookId}`)
+      return res.status(Status.NotFound).json(`There is no book with the id ${req.params.bookId}`)
     }
 
     // TODO: Only return first few pages
 
-    return res.status(200).json(book)
+    return res.status(Status.Ok).json(book)
   } catch (err) {
-    return res.status(500).json(err.message)
+    return res.status(Status.InternalServerError).json(err.message)
   }
 })
