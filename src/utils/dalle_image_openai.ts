@@ -27,15 +27,14 @@ const getImage = async (prompt: string): Promise<string> => {
       },
     })
   } catch (err) {
-    console.log(err.response.data)
-    process.exit(0)
+    console.error('error happened')
   }
 
   const b64String = response.data.data[0].b64_json
   return b64String
 }
 
-const skipPageIndex = [6]
+const skipPageIndex = [6, 7]
 
 const main = async () => {
   const currentDoc = await BookModel.findById('64cdd10923b0d36c39921d23').lean().exec()
@@ -50,9 +49,8 @@ const main = async () => {
     if (skipPageIndex.includes(i)) {
       continue
     }
-    // console.log(englishPage)
-    // process.exit()
-    console.log('check')
+
+    console.log('check', i)
     const b64String = await getImage(englishPage)
 
     await BookModel.findByIdAndUpdate('64cdd10923b0d36c39921d23', {
@@ -61,19 +59,6 @@ const main = async () => {
       },
     }).exec()
   }
-
-  // for (const englishPage of englishContent) {
-  //   console.log('check')
-  //   const b64String = await getImage(englishPage)
-
-  //   await BookModel.findByIdAndUpdate('64cdd10923b0d36c39921d23', {
-  //     $push: {
-  //       'content.images': b64String,
-  //     },
-  //   }).exec()
-  // }
-
-  // end
 }
 
 main()
