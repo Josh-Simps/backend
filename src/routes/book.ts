@@ -2,6 +2,7 @@ import { Request, Response, Router } from 'express'
 import { BookModel } from '../models/book'
 import { Status } from '../types/status'
 import { ErrorService } from '../services/errorService'
+import { isValidObjectId } from 'mongoose'
 
 export const bookRoute = Router()
 
@@ -17,10 +18,14 @@ bookRoute.route('/').get(async (req: Request, res: Response) => {
 
 bookRoute.route('/:bookId').get(async (req: Request<{ bookId: string }>, res: Response) => {
   try {
+    if (!isValidObjectId(req.params.bookId)) {
+      return res.status(Status.BadRequest).json(`The id '${req.params.bookId}' is not a valid id`)
+    }
+
     const book = await BookModel.findById(req.params.bookId)
 
     if (!book) {
-      return res.status(Status.NotFound).json(`There is no book with the id ${req.params.bookId}`)
+      return res.status(Status.NotFound).json(`There is no book with the id '${req.params.bookId}'`)
     }
 
     // TODO: Only return first few pages
