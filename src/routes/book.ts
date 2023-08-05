@@ -6,6 +6,8 @@ import { isValidObjectId } from 'mongoose'
 
 export const bookRoute = Router()
 
+const BookId1984 = '64cdd10923b0d36c39921d23'
+
 bookRoute.route('/').get(async (req: Request, res: Response) => {
   try {
     const bookMetadata = await BookModel.find().select(['title', 'coverImage', 'author', 'publishDate'])
@@ -22,15 +24,19 @@ bookRoute.route('/:bookId').get(async (req: Request<{ bookId: string }>, res: Re
       return res.status(Status.BadRequest).json(`The id '${req.params.bookId}' is not a valid id`)
     }
 
-    const book = await BookModel.findById(req.params.bookId)
+    const book = await BookModel.findById(req.params.bookId).lean().exec()
 
     if (!book) {
       return res.status(Status.NotFound).json(`There is no book with the id '${req.params.bookId}'`)
     }
 
+    // TODO: Temporary only - We don't have content for the other books yet
+    const book1984 = await BookModel.findById(BookId1984).lean().exec()
+    const mockedBook = { ...book, content: book1984.content }
+
     // TODO: Only return first few pages
 
-    return res.status(Status.Ok).json(book)
+    return res.status(Status.Ok).json(mockedBook)
   } catch (err) {
     return ErrorService.handleError(res, err)
   }
