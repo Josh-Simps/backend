@@ -40,4 +40,29 @@ ${content}
   const responseContent = completion.data.choices[0].message.content
   fs.writeFileSync(path.resolve(__dirname, 'book_english.txt'), responseContent, { encoding: 'utf-8' })
 }
-main()
+// main()
+
+const transalte = async (text: string) => {
+  const completion = await openai.createChatCompletion({
+    model: 'gpt-3.5-turbo-16k',
+    messages: [
+      {
+        role: 'system',
+        content: 'You are a helpful assistant that is able to transalte modern English text into olden day English.',
+      },
+      {
+        role: 'user',
+        content: `Convert Convert the following book content into 15th century English:
+"
+${text}
+"
+      `,
+      },
+    ],
+  })
+  // console.log(completion.data.choices[0].message)
+  const responseContent = completion.data.choices[0].message.content
+  return responseContent
+}
+
+export { transalte }
