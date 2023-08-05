@@ -19,7 +19,7 @@ app.get('/', async (req: Request, res: Response) => {
   return res.status(200).send('A cool API :)')
 })
 
-app.use(bookRoute)
+app.use('/api/books', bookRoute)
 app.use(exampleRoute)
 
 export { app }
