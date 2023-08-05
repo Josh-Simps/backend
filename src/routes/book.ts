@@ -1,6 +1,7 @@
 import { Request, Response, Router } from 'express'
 import { BookModel } from '../models/book'
 import { Status } from '../types/status'
+import { ErrorService } from '../services/errorService'
 
 export const bookRoute = Router()
 
@@ -10,7 +11,7 @@ bookRoute.route('/').get(async (req: Request, res: Response) => {
 
     return res.status(Status.Ok).json(bookMetadata)
   } catch (err) {
-    return res.status(Status.InternalServerError).json(err.message)
+    return ErrorService.handleError(res, err)
   }
 })
 
@@ -26,6 +27,6 @@ bookRoute.route('/:bookId').get(async (req: Request<{ bookId: string }>, res: Re
 
     return res.status(Status.Ok).json(book)
   } catch (err) {
-    return res.status(Status.InternalServerError).json(err.message)
+    return ErrorService.handleError(res, err)
   }
 })
