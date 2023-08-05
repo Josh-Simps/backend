@@ -18,10 +18,7 @@ const bookSchema = new Schema<BookType>({
   blurb: {
     type: String,
   },
-  originalContent: {
-    type: String,
-  },
-  translatedContent: {
+  content: {
     type: Map,
     of: String,
   },
