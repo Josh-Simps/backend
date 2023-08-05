@@ -29,7 +29,8 @@
     "express": "^4.17.1",
     "moment": "^2.29.1",
     "mongoose": "^5.13.5",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "openai": "^3.3.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",
